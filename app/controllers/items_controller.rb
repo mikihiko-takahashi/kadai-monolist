@@ -1,11 +1,17 @@
 class ItemsController < ApplicationController
   before_action :require_user_logged_in
 
+  def show
+    @item = Item.find(params[:id])
+    @want_users = @item.want_users
+    @have_users = @item.have_users
+  end
+
   def new
     @items = []
 
     @keyword = params[:keyword]
-    if @keyword.present? # 
+    if @keyword
       results = RakutenWebService::Ichiba::Item.search({
         keyword: @keyword,
         imageFlag: 1,
